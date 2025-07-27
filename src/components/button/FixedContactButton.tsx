@@ -7,7 +7,6 @@ import { useContactModalStore } from "@/lib/zustand/stores";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRef, useState, useEffect } from "react";
 import { useFooter } from "@/contexts/footer-context";
-interface FixedContactButtonProps {}
 
 export default function FixedContactButton() {
   const isModalOpen = useContactModalStore((state) => state.isModalOpen);

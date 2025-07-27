@@ -19,7 +19,7 @@ import {
 import { locations } from "@/data/locations";
 import { playfair_display } from "@/fonts";
 
-const featureIcons: { [key: string]: any } = {
+const featureIcons: { [key: string]: React.ComponentType<any> } = {
   WiFi: IconWifi,
   "Outdoor Seating": IconHome,
   "Live Music": IconMusic,

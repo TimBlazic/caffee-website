@@ -3,11 +3,7 @@
 import { useContactModalStore } from "@/lib/zustand/stores";
 import { motion } from "motion/react";
 
-export default function PhysicsContactButtons({
-  containerRef,
-}: {
-  containerRef: React.RefObject<HTMLDivElement>;
-}) {
+export default function PhysicsContactButtons() {
   const toggleModal = useContactModalStore((state) => state.toggleModal);
 
   const coffeeButtons = [

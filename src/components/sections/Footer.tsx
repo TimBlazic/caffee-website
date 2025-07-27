@@ -32,11 +32,7 @@ export default function Footer() {
             Come visit <span className="text-[#6F4E37] z-50">us today!</span>
           </h2>
 
-          {width > 768 && (
-            <PhysicsContactButtons
-              containerRef={matterContainer as React.RefObject<HTMLDivElement>}
-            />
-          )}
+          {width > 768 && <PhysicsContactButtons />}
 
           <FooterCTAMobile />
         </div>
