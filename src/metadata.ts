@@ -1,41 +1,42 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Jazmin Wong | Creative Content Strategist",
+  title: "Artisan Coffee | Specialty Coffee House & Roastery",
   description:
-    "Jazzi is a creative content strategist with a passion for creating engaging and effective content across digital platforms.",
+    "Family-owned coffee house in the heart of the city. Serving freshly roasted coffee, artisan pastries, and creating a cozy community space for coffee lovers.",
 
   // Basic SEO
   keywords: [
-    "creative content strategist",
-    "digital marketing",
-    "content marketing",
-    "social media marketing",
-    "content creation",
-    "research",
-    "strategic planning",
-    "brand voice",
-    "content strategy",
-    "digital content",
-    "social media strategy",
+    "coffee house",
+    "specialty coffee",
+    "coffee shop",
+    "fresh roasted coffee",
+    "artisan pastries",
+    "cozy cafe",
+    "community coffee",
+    "local coffee shop",
+    "coffee roastery",
+    "neighborhood cafe",
+    "coffee culture",
+    "family owned cafe",
   ], // Add your keywords here
-  authors: [{ name: "Jazmin Wong", url: "https://www.jazzicreates.tv" }],
-  creator: "Jazmin Wong",
-  publisher: "Jazmin Wong",
+  authors: [{ name: "Artisan Coffee", url: "https://www.artisancoffee.com" }],
+  creator: "Artisan Coffee",
+  publisher: "Artisan Coffee",
 
   // Open Graph
   openGraph: {
-    title: "Creative Content Strategist",
+    title: "Artisan Coffee | Specialty Coffee House & Roastery",
     description:
-      "Jazzi is a creative content strategist with a passion for creating engaging and effective content across digital platforms.",
-    url: "https://www.jazzicreates.tv",
-    siteName: "jazminwong.com",
+      "Family-owned coffee house in the heart of the city. Serving freshly roasted coffee, artisan pastries, and creating a cozy community space for coffee lovers.",
+    url: "https://www.artisancoffee.com",
+    siteName: "artisancoffee.com",
     images: [
       {
         url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: "Jazmin Wong - Creative Content Strategist",
+        alt: "Artisan Coffee - Specialty Coffee House & Roastery",
       },
     ],
     locale: "en_US",
@@ -45,23 +46,23 @@ export const metadata: Metadata = {
   // Twitter
   twitter: {
     card: "summary_large_image",
-    title: "Jazmin Wong | Creative Content Strategist",
+    title: "Artisan Coffee | Specialty Coffee House & Roastery",
     description:
-      "Jazzi is a creative content strategist with a passion for creating engaging and effective content across digital platforms.",
-    creator: "@jazminnwong",
+      "Family-owned coffee house in the heart of the city. Serving freshly roasted coffee, artisan pastries, and creating a cozy community space for coffee lovers.",
+    creator: "@artisancoffee",
     images: [
       {
         url: "/src/app/opengraph-image.png",
         width: 1200,
         height: 675,
-        alt: "Jazmin Wong - Creative Content Strategist",
+        alt: "Artisan Coffee - Specialty Coffee House & Roastery",
       },
     ],
   },
 
   // Canonical URL
   alternates: {
-    canonical: "https://www.jazzicreates.tv",
+    canonical: "https://www.artisancoffee.com",
   },
 
   // Robots
@@ -80,13 +81,13 @@ export const metadata: Metadata = {
     yandex: "yandex-verification-code-123456",
     yahoo: "yahoo-verification-code-123456",
     other: {
-      me: ["https://linkedin.com/in/jazminwong"],
+      me: ["https://instagram.com/artisancoffee"],
     },
   },
 
   // App links
   appleWebApp: {
-    title: "Jazmin Wong Portfolio",
+    title: "Artisan Coffee",
     statusBarStyle: "default",
   },
 
@@ -98,7 +99,7 @@ export const metadata: Metadata = {
   },
 
   // Other
-  category: "Portfolio",
+  category: "Coffee",
   colorScheme: "light dark",
-  themeColor: "#FBC1D5",
+  themeColor: "#6F4E37",
 };

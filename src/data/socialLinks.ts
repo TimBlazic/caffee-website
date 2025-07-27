@@ -6,23 +6,23 @@ type SocialLink = {
 
 export const socialLinks: SocialLink[] = [
   {
-    title: "Instagram",
-    url: "https://www.instagram.com/jazziwong_/",
-    videoUrl: "videos/instagram.webm",
+    title: "Menu",
+    url: "https://artisancoffee.com/menu",
+    videoUrl: "/videos/instagram.webm",
   },
   {
-    title: "YouTube",
-    url: "https://www.youtube.com/@jazziwong",
-    videoUrl: "videos/youtube.webm",
+    title: "Events",
+    url: "https://artisancoffee.com/events",
+    videoUrl: "/videos/youtube.webm",
   },
   {
-    title: "Unsplash",
-    url: "https://unsplash.com/@jazziwong",
-    videoUrl: "videos/unsplash.webm",
+    title: "Gallery",
+    url: "https://artisancoffee.com/gallery",
+    videoUrl: "/videos/unsplash.webm",
   },
   {
-    title: "TikTok",
-    url: "https://www.tiktok.com/@jazziwong",
-    videoUrl: "videos/tiktok.webm",
+    title: "Reservations",
+    url: "https://artisancoffee.com/reservations",
+    videoUrl: "/videos/tiktok.webm",
   },
 ];

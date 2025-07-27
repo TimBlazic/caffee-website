@@ -6,25 +6,25 @@ export default function FooterCTAMobile() {
 
   return (
     <div className="flex flex-col items-center gap-2 w-full absolute left-1/2 -translate-x-1/2 top-[65%] -translate-y-[65%] lg:hidden">
-      <a
-        href="mailto:jazminnwong@gmail.com"
-        className="flex flex-col items-start pt-6 pb-4 px-4 rounded-lg w-full max-w-[600px] bg-[#F0CCDF] cursor-pointer"
-      >
-        <p className="text-[#C43670] tracking-tight">Email me</p>
-
-        <p className="text-xl text-stone-100 leading-tight font-semibold">
-          jazminnwong@gmail.com
-        </p>
-      </a>
-
       <button
         onClick={toggleModal}
-        className="p-4 rounded-full w-full max-w-[600px] bg-[#F0CCDF] cursor-pointer"
+        className="flex flex-col items-start pt-6 pb-4 px-4 rounded-lg w-full max-w-[600px] bg-[#D2B48C] cursor-pointer"
       >
-        <p className="text-2xl tracking-tight font-semibold text-[#C43670]">
-          Send me a message
+        <p className="text-[#3C2415] tracking-tight">Visit us</p>
+
+        <p className="text-xl text-[#F7E7CE] leading-tight font-semibold">
+          Check our locations
         </p>
       </button>
+
+      <a
+        href="tel:+38612345678"
+        className="p-4 rounded-full w-full max-w-[600px] bg-[#D2B48C] cursor-pointer"
+      >
+        <p className="text-2xl tracking-tight font-semibold text-[#3C2415]">
+          Call us now
+        </p>
+      </a>
     </div>
   );
 }

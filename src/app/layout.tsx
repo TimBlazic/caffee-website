@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { metadata } from "@/metadata";
 import { saans } from "@/fonts";
 import DocumentTitleChanger from "@/components/layout/DocumentTitleChanger";
-import ContactModal from "@/components/modal/ContactModal";
+import LocationsModal from "@/components/modal/LocationsModal";
 import "./globals.css";
 import { FooterProvider } from "@/contexts/footer-context";
 
@@ -19,12 +19,12 @@ export default function RootLayout({
       <FooterProvider>
         <ReactLenis root>
           <body
-            className={`${saans.className} font-semibold antialiased bg-[#C43670] text-[#F0CCDF]`}
+            className={`${saans.className} font-semibold antialiased bg-[#6F4E37] text-[#F7E7CE]`}
           >
             <DocumentTitleChanger />
 
             {children}
-            <ContactModal />
+            <LocationsModal />
             <Analytics />
           </body>
         </ReactLenis>

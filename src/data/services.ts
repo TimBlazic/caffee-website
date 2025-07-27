@@ -7,59 +7,63 @@ type Service = {
 
 export const services: Service[] = [
   {
-    title: "UGC",
+    title: "Signature Blends",
     description:
-      "I leverage authentic content created by users to build trust and engagement with your audience, enhancing brand credibility and reach.",
+      "Our carefully crafted signature coffee blends, roasted in-house daily. From rich dark roasts to smooth light blends, each cup is designed to create memorable moments.",
     keywords: [
-      "Authenticity",
-      "Engagement",
-      "Trust",
-      "Community Building",
-      "Brand Advocacy",
-      "Organic Reach",
+      "House Roasted",
+      "Daily Fresh",
+      "Signature Blends",
+      "Dark & Light Roasts",
+      "Quality Beans",
+      "Artisan Roasting",
     ],
-    imageUrl: "/images/services/image-1.jpg",
+    imageUrl:
+      "https://images.unsplash.com/photo-1495774856032-8b90bbb32b32?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y29mZmVlfGVufDB8MHwwfHx8MA%3D%3D",
   },
   {
-    title: "Photography",
+    title: "Artisan Pastries",
     description:
-      "I capture high-quality images that tell your brand's story, evoke emotions, and create a lasting impression on your audience.",
+      "Freshly baked pastries, croissants, and seasonal treats made by our skilled bakers. Perfect companions to your morning coffee or afternoon pick-me-up.",
     keywords: [
-      "High-Quality Images",
-      "Brand Storytelling",
-      "Visual Appeal",
-      "Emotional Connection",
-      "Professional Photography",
-      "Creative Direction",
+      "Fresh Baked",
+      "Croissants",
+      "Seasonal Treats",
+      "Morning Pastries",
+      "Artisan Baking",
+      "Daily Specials",
     ],
-    imageUrl: "/images/services/image-2.jpg",
+    imageUrl:
+      "https://images.unsplash.com/photo-1557952138-7ed256c23bc5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNyb2lzc2FudHN8ZW58MHwwfDB8fHww",
   },
   {
-    title: "Short-Form Video",
+    title: "Cozy Workspace",
     description:
-      "I produce engaging short-form videos that capture attention quickly, convey your message effectively, and drive social media engagement.",
+      "A warm, inviting atmosphere perfect for remote work, studying, or casual meetings. Free WiFi, comfortable seating, and the gentle hum of coffee culture.",
     keywords: [
-      "Engaging Content",
-      "Quick Attention",
-      "Effective Messaging",
-      "Social Media Engagement",
-      "Video Production",
-      "Creative Storytelling",
+      "Remote Work",
+      "Free WiFi",
+      "Comfortable Seating",
+      "Study Space",
+      "Meeting Spot",
+      "Cozy Atmosphere",
     ],
-    imageUrl: "/images/services/image-3.jpg",
+    imageUrl:
+      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2FmZXxlbnwwfDB8MHx8fDA%3D",
   },
   {
-    title: "Content Strategy",
+    title: "Community Events",
     description:
-      "I create social strategies to maximize reach, engagement, and conversions through data-driven insights and creative execution.",
+      "Regular coffee tastings, live acoustic music, book clubs, and local art exhibitions. We're more than a coffee shop - we're a community gathering place.",
     keywords: [
-      "Research & Insights",
-      "Purpose, Mission, Vision",
-      "Value Propositions",
-      "Brand Voice",
-      "Verbal Identity",
-      "Personality Traits",
+      "Coffee Tastings",
+      "Live Music",
+      "Book Clubs",
+      "Art Exhibitions",
+      "Community Events",
+      "Local Culture",
     ],
-    imageUrl: "/images/services/image-4.jpg",
+    imageUrl:
+      "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fGNhZmV8ZW58MHwwfDB8fHww",
   },
 ];

@@ -7,15 +7,9 @@ import { useContactModalStore } from "@/lib/zustand/stores";
 import useWindowSize from "@/hooks/useWindowSize";
 import { useRef, useState, useEffect } from "react";
 import { useFooter } from "@/contexts/footer-context";
-import { ContactFormRef } from "@/components/form/ContactForm";
+interface FixedContactButtonProps {}
 
-interface FixedContactButtonProps {
-  formRef: React.RefObject<ContactFormRef>;
-}
-
-export default function FixedContactButton({
-  formRef,
-}: FixedContactButtonProps) {
+export default function FixedContactButton() {
   const isModalOpen = useContactModalStore((state) => state.isModalOpen);
   const toggleModal = useContactModalStore((state) => state.toggleModal);
 
@@ -33,11 +27,7 @@ export default function FixedContactButton({
   }, []);
 
   const handleClick = () => {
-    if (isModalOpen && formRef.current) {
-      formRef.current.submit();
-    } else {
-      toggleModal();
-    }
+    toggleModal();
   };
 
   return (
@@ -56,7 +46,7 @@ export default function FixedContactButton({
       onClick={handleClick}
       ref={buttonRef}
       className={`${
-        isModalOpen ? "bg-[#C43670]" : "bg-[#F0CCDF]"
+        isModalOpen ? "bg-[#3C2415]" : "bg-[#D2B48C]"
       } flex items-center gap-2 xl:gap-3 fixed bottom-8 left-1/2 -translate-x-1/2 pl-1 py-1 pr-4 xl:pr-6 rounded-full shadow-2xl cursor-pointer group z-999 transition-colors duration-700 delay-100 ease-in-out`}
     >
       <div className="h-12 xl:h-16 w-12 xl:w-16 relative rounded-full">
@@ -111,15 +101,15 @@ export default function FixedContactButton({
 
       <div
         className={`${
-          isModalOpen ? "text-[#F0CCDF]" : "text-[#C43670]"
+          isModalOpen ? "text-[#F7E7CE]" : "text-[#3C2415]"
         } overflow-hidden h-7 lg:h-9`}
       >
         <div className="flex flex-col transition-transform duration-200 ease-[cubic-bezier(0.64,0.57,0.67,1.53)] group-hover:-translate-y-1/2">
           <span className="text-xl lg:text-3xl font-semibold">
-            {isModalOpen ? "Submit" : "Contact"}
+            {isModalOpen ? "Close" : "Find us"}
           </span>
           <span className="text-xl lg:text-3xl font-semibold">
-            {isModalOpen ? "Submit" : "Contact"}
+            {isModalOpen ? "Close" : "Find us"}
           </span>
         </div>
       </div>

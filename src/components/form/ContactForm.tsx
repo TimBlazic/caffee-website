@@ -1,323 +1,367 @@
 "use client";
 
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { serviceOptions, budgetOptions } from "@/data/contactForm";
-import { useContactModalStore } from "@/lib/zustand/stores";
-export interface ContactFormRef {
-  submit: () => void;
+import { useState, useRef } from "react";
+import { motion } from "motion/react";
+import { initialData } from "@/data/contactForm";
+import { playfair_display } from "@/fonts";
+
+interface ClientData {
+  name: string;
+  email: string;
+  company: string;
+  message: string;
+  services: string[];
+  budget: string[];
 }
 
-const ContactForm = forwardRef<ContactFormRef>((_, ref) => {
+interface Errors {
+  name?: string;
+  email?: string;
+  company?: string;
+  message?: string;
+  services?: string;
+  budget?: string;
+}
+
+const servicesOptions = [
+  "Signature Blends",
+  "Artisan Pastries",
+  "Cozy Workspace",
+  "Community Events",
+  "Private Events",
+  "Catering",
+  "Coffee Tastings",
+  "Other",
+];
+
+const budgetOptions = [
+  "Under $500",
+  "$500-$1k",
+  "$1k-$2.5k",
+  "$2.5k-$5k",
+  "$5k+",
+];
+
+const validateForm = (data: ClientData): Errors => {
+  const errors: Errors = {};
+
+  if (!data.name.trim()) {
+    errors.name = "Name is required";
+  }
+
+  if (!data.email.trim()) {
+    errors.email = "Email is required";
+  } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+    errors.email = "Email is invalid";
+  }
+
+  if (!data.company.trim()) {
+    errors.company = "Company is required";
+  }
+
+  if (!data.message.trim()) {
+    errors.message = "Message is required";
+  }
+
+  if (data.services.length === 0) {
+    errors.services = "Please select at least one service";
+  }
+
+  if (data.budget.length === 0) {
+    errors.budget = "Please select a budget range";
+  }
+
+  return errors;
+};
+
+interface ContactFormProps {
+  isModalOpen: boolean;
+  toggleModal: () => void;
+}
+
+export default function ContactForm({
+  isModalOpen,
+  toggleModal,
+}: ContactFormProps) {
+  const [clientData, setClientData] = useState<ClientData>(initialData);
+  const [errors, setErrors] = useState<Errors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
+
   const formRef = useRef<HTMLFormElement>(null);
-  const [clientData, setClientData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    message: "",
-  });
-  const [services, setServices] = useState<string[]>([]);
-  const [budget, setBudget] = useState<string>("");
-  const [errors, setErrors] = useState({
-    name: false,
-    email: false,
-    company: false,
-    message: false,
-    services: false,
-    budget: false,
-  });
-  const toggleModal = useContactModalStore((state) => state.toggleModal);
 
-  useImperativeHandle(ref, () => ({
-    submit: () => {
-      if (formRef.current) {
-        formRef.current.requestSubmit();
-      }
-    },
-  }));
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setClientData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
-  // Handle service selection (multiselect)
-  const toggleService = (service: string) => {
-    if (services.includes(service)) {
-      setServices(services.filter((item) => item !== service));
-    } else {
-      setServices([...services, service]);
+    // Clear error when user starts typing
+    if (errors[name as keyof Errors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: undefined,
+      }));
     }
-    setErrors({ ...errors, services: false });
   };
 
-  // Handle budget selection (single select)
-  const selectBudget = (option: string) => {
-    setBudget(option);
-    setErrors({ ...errors, budget: false });
+  const handleArrayChange = (field: "services" | "budget", value: string) => {
+    setClientData((prev) => {
+      const currentArray = prev[field];
+      const newArray = currentArray.includes(value)
+        ? currentArray.filter((item) => item !== value)
+        : [...currentArray, value];
+
+      return {
+        ...prev,
+        [field]: newArray,
+      };
+    });
+
+    // Clear error when user makes a selection
+    if (errors[field]) {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: undefined,
+      }));
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Reset all errors
-    const newErrors = {
-      name: false,
-      email: false,
-      company: false,
-      message: false,
-      services: false,
-      budget: false,
-      referrals: false,
-    };
-
-    // Validate each field
-    if (clientData.name.trim() === "") {
-      newErrors.name = true;
-    }
-    if (clientData.email.trim() === "") {
-      newErrors.email = true;
-    }
-    if (clientData.company.trim() === "") {
-      newErrors.company = true;
-    }
-    if (clientData.message.trim() === "") {
-      newErrors.message = true;
-    }
-    if (services.length === 0) {
-      newErrors.services = true;
-    }
-    if (budget === "") {
-      newErrors.budget = true;
-    }
-
-    setErrors(newErrors);
-
-    // If there are any errors, don't submit
-    if (Object.values(newErrors).some((error) => error)) {
+    const validationErrors = validateForm(clientData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
-    // Add your form submission logic here
-    console.log("Form submitted: ");
-    console.log(clientData);
-    console.log(services);
-    console.log(budget);
+    setIsSubmitting(true);
+    setErrors({});
 
-    // Send email
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: clientData.name,
-        email: clientData.email,
-        company: clientData.company,
-        message: clientData.message,
-        services,
-        budget,
-      }),
-    });
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(clientData),
+      });
 
-    if (response.ok) {
-      console.log("Email sent successfully");
-      setClientData({
-        name: "",
-        email: "",
-        company: "",
-        message: "",
-      });
-      setServices([]);
-      setBudget("");
-      setErrors({
-        name: false,
-        email: false,
-        company: false,
-        message: false,
-        services: false,
-        budget: false,
-      });
-      toggleModal();
-    } else {
-      console.error("Failed to send email");
+      if (response.ok) {
+        setSubmitStatus("success");
+        setClientData(initialData);
+        setTimeout(() => {
+          toggleModal();
+          setSubmitStatus("idle");
+        }, 2000);
+      } else {
+        setSubmitStatus("error");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="flex flex-col h-full">
-      {/* <div className="flex flex-col"> */}
-      <h2 className="text-[clamp(48px,7vw,164px)] font-semibold tracking-tight mb-[clamp(32px,3vw,48px)] leading-[0.8]">
-        <span className="text-[#C43670]">Get in</span>{" "}
-        <span className="text-[#5D001D]">touch</span>
-      </h2>
-
-      <form
-        ref={formRef}
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-3 h-full"
-      >
-        <div className="flex flex-col lg:flex-row gap-3 w-full">
-          {/* Full name */}
-          <div
-            className={`flex flex-col justify-end w-full lg:w-1/3 px-6 py-4 h-28 lg:h-32 2xl:h-44 rounded-xl lg:rounded-2xl bg-[#F0CCDF] border-3 transition-colors duration-300 focus-within:border-[#C43670]
-              ${errors.name ? "border-[#d40101]" : "border-[#C43670]/0"}
-              `}
+    <div className="flex-1 flex flex-col">
+      <div className="flex-1 relative">
+        <h3 className="text-[clamp(32px,4vw,88px)] font-semibold mb-8 lg:mb-10 2xl:mb-14 text-center tracking-tight leading-[1.1]">
+          <span className="text-[#3C2415]">Get in</span>{" "}
+          <span
+            className={`${playfair_display.className} text-[#6F4E37] font-normal`}
           >
-            <label
-              htmlFor="name"
-              className="text-[#C43670] font-semibold text-[clamp(20px,1.5vw,32px)]"
+            touch
+          </span>
+        </h3>
+
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-3 h-full"
+        >
+          <div className="flex flex-col lg:flex-row gap-3 w-full">
+            {/* Full name */}
+            <div
+              className={`flex flex-col justify-end w-full lg:w-1/3 px-6 py-4 h-28 lg:h-32 2xl:h-44 rounded-xl lg:rounded-2xl bg-[#D2B48C] border-3 transition-colors duration-300 focus-within:border-[#3C2415]
+                ${errors.name ? "border-[#d40101]" : "border-[#3C2415]/0"}
+                `}
             >
-              Full name
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={clientData.name}
-              onChange={(e) => {
-                setClientData({ ...clientData, name: e.target.value });
-                setErrors({ ...errors, name: false });
-              }}
-              placeholder="Fiona Wong"
-              className="text-[#C43670] font-semibold placeholder:text-[#C43670]/40 text-[clamp(20px,1.5vw,32px)] focus:outline-none"
-            />
+              <label
+                htmlFor="name"
+                className="text-[#3C2415] font-semibold text-[clamp(20px,1.5vw,32px)]"
+              >
+                Full name
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={clientData.name}
+                onChange={handleChange}
+                placeholder="John Doe"
+                className="text-[#3C2415] font-semibold placeholder:text-[#3C2415]/40 text-[clamp(20px,1.5vw,32px)] focus:outline-none"
+                style={{ backgroundColor: "transparent" }}
+              />
+            </div>
+
+            {/* Email */}
+            <div
+              className={`flex flex-col justify-end w-full lg:w-1/3 px-6 py-4 h-28 lg:h-32 2xl:h-44 rounded-xl lg:rounded-2xl bg-[#D2B48C] border-3 transition-colors duration-300 focus-within:border-[#3C2415]
+                ${errors.email ? "border-[#d40101]" : "border-[#3C2415]/0"}
+                `}
+            >
+              <label
+                htmlFor="email"
+                className="text-[#3C2415] font-semibold text-[clamp(20px,1.5vw,32px)]"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={clientData.email}
+                onChange={handleChange}
+                placeholder="john@doe.com"
+                className="text-[#3C2415] font-semibold placeholder:text-[#3C2415]/40 text-[clamp(20px,1.5vw,32px)] focus:outline-none"
+                style={{ backgroundColor: "transparent" }}
+              />
+            </div>
+
+            {/* Company */}
+            <div
+              className={`flex flex-col justify-end w-full lg:w-1/3 px-6 py-4 h-28 lg:h-32 2xl:h-44 rounded-xl lg:rounded-2xl bg-[#D2B48C] border-3 transition-colors duration-300 focus-within:border-[#3C2415]
+                ${errors.company ? "border-[#d40101]" : "border-[#3C2415]/0"}
+                `}
+            >
+              <label
+                htmlFor="company"
+                className="text-[#3C2415] font-semibold text-[clamp(20px,1.5vw,32px)]"
+              >
+                Company
+              </label>
+              <input
+                type="text"
+                name="company"
+                value={clientData.company}
+                onChange={handleChange}
+                placeholder="Acme Corp"
+                className="text-[#3C2415] font-semibold placeholder:text-[#3C2415]/40 text-[clamp(20px,1.5vw,32px)] focus:outline-none"
+                style={{ backgroundColor: "transparent" }}
+              />
+            </div>
           </div>
 
-          {/* Email */}
-          <div
-            className={`flex flex-col justify-end w-full lg:w-1/3 px-6 py-4 h-28 lg:h-32 2xl:h-44 rounded-xl lg:rounded-2xl bg-[#F0CCDF] border-3 transition-colors duration-300 focus-within:border-[#C43670]
-              ${errors.email ? "border-[#d40101]" : "border-[#C43670]/0"}
-              `}
-          >
-            <label
-              htmlFor="email"
-              className="text-[#C43670] font-semibold text-[clamp(20px,1.5vw,32px)]"
+          <div className="flex flex-col lg:flex-row gap-3 w-full flex-1">
+            {/* Message */}
+            <div
+              className={`flex flex-col w-full lg:w-1/3 px-6 pt-12 lg:pt-16 pb-4 h-72 lg:h-full rounded-xl lg:rounded-2xl bg-[#D2B48C] border-3 transition-colors duration-300 focus-within:border-[#3C2415]
+                ${errors.message ? "border-[#d40101]" : "border-[#3C2415]/0"}
+                `}
             >
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={clientData.email}
-              onChange={(e) => {
-                setClientData({ ...clientData, email: e.target.value });
-                setErrors({ ...errors, email: false });
-              }}
-              placeholder="fionawong@gmail.com"
-              className="text-[#C43670] font-semibold placeholder:text-[#C43670]/40 text-[clamp(20px,1.5vw,32px)] focus:outline-none"
-            />
+              <label
+                htmlFor="message"
+                className="text-[#3C2415] font-semibold text-[clamp(20px,1.5vw,32px)] mb-2"
+              >
+                Message
+              </label>
+              <textarea
+                name="message"
+                value={clientData.message}
+                onChange={handleChange}
+                placeholder="Tell us about your project..."
+                className="text-[#3C2415] font-semibold placeholder:text-[#3C2415]/40 text-[clamp(20px,1.5vw,32px)] leading-tight focus:outline-none h-full resize-none"
+                style={{ backgroundColor: "transparent" }}
+              />
+            </div>
+
+            {/* Services */}
+            <div
+              className={`flex flex-col w-full lg:w-1/3 px-6 pt-12 lg:pt-16 pb-6 lg:h-full rounded-xl lg:rounded-2xl bg-[#D2B48C] border-3 transition-colors duration-300 focus-within:border-[#3C2415]
+                ${errors.services ? "border-[#d40101]" : "border-[#3C2415]/0"}
+                `}
+            >
+              <label className="text-[#3C2415] font-semibold text-[clamp(20px,1.5vw,32px)] mb-2 lg:mb-4 2xl:mb-6">
+                Services
+              </label>
+              <div className="flex flex-wrap gap-2 lg:gap-3">
+                {servicesOptions.map((service) => (
+                  <button
+                    key={service}
+                    type="button"
+                    onClick={() => handleArrayChange("services", service)}
+                    className={`px-3.5 2xl:px-5 py-1.5 2xl:py-2 text-[clamp(18px,1.2vw,24px)] font-semibold rounded-full border-2 border-[#3C2415] cursor-pointer transition-colors duration-300 ease-in-out
+                      ${
+                        clientData.services.includes(service)
+                          ? "text-[#F7E7CE] bg-[#3C2415]"
+                          : "text-[#3C2415]"
+                      }`}
+                  >
+                    {service}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Budget */}
+            <div
+              className={`flex flex-col w-full lg:w-1/3 px-6 pt-12 lg:pt-16 pb-6 h-96 lg:h-full rounded-xl lg:rounded-2xl bg-[#D2B48C] border-3 transition-colors duration-300 focus-within:border-[#3C2415]
+                ${errors.budget ? "border-[#d40101]" : "border-[#3C2415]/0"}
+                `}
+            >
+              <label className="text-[#3C2415] font-semibold text-[clamp(20px,1.5vw,32px)] mb-2 lg:mb-4 2xl:mb-6">
+                Budget
+              </label>
+              <div className="flex flex-wrap gap-2 lg:gap-3">
+                {budgetOptions.map((budget) => (
+                  <button
+                    key={budget}
+                    type="button"
+                    onClick={() => handleArrayChange("budget", budget)}
+                    className={`px-3.5 2xl:px-5 py-1.5 2xl:py-2 text-[clamp(18px,1.2vw,24px)] font-semibold rounded-full border-2 border-[#3C2415] cursor-pointer transition-colors duration-300 ease-in-out
+                      ${
+                        clientData.budget.includes(budget)
+                          ? "text-[#F7E7CE] bg-[#3C2415]"
+                          : "text-[#3C2415]"
+                      }`}
+                  >
+                    {budget}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Company */}
-          <div
-            className={`flex flex-col justify-end w-full lg:w-1/3 px-6 py-4 h-28 lg:h-32 2xl:h-44 rounded-xl lg:rounded-2xl bg-[#F0CCDF] border-3 transition-colors duration-300 focus-within:border-[#C43670]
-              ${errors.company ? "border-[#d40101]" : "border-[#C43670]/0"}
-              `}
+          <motion.button
+            type="submit"
+            disabled={isSubmitting || submitStatus === "success"}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`w-full py-4 lg:py-6 rounded-xl lg:rounded-2xl font-semibold text-[clamp(20px,1.5vw,32px)] transition-all duration-300 ${
+              submitStatus === "success"
+                ? "bg-green-500 text-white"
+                : submitStatus === "error"
+                ? "bg-red-500 text-white"
+                : "bg-[#3C2415] text-[#F7E7CE] hover:bg-[#2A1A0F]"
+            }`}
           >
-            <label
-              htmlFor="company"
-              className="text-[#C43670] font-semibold text-[clamp(20px,1.5vw,32px)]"
-            >
-              Company
-            </label>
-            <input
-              type="text"
-              name="company"
-              value={clientData.company}
-              onChange={(e) => {
-                setClientData({ ...clientData, company: e.target.value });
-                setErrors({ ...errors, company: false });
-              }}
-              placeholder="Fifi Vintage"
-              className="text-[#C43670] font-semibold placeholder:text-[#C43670]/40 text-[clamp(20px,1.5vw,32px)] focus:outline-none"
-            />
-          </div>
-        </div>
-
-        <div className="flex flex-col lg:flex-row gap-3 w-full h-full">
-          {/* Message */}
-          <div
-            className={`flex flex-col w-full lg:w-1/3 px-6 pt-12 lg:pt-16 pb-4 h-72 lg:h-full rounded-xl lg:rounded-2xl bg-[#F0CCDF] border-3 transition-colors duration-300 focus-within:border-[#C43670]
-              ${errors.message ? "border-[#d40101]" : "border-[#C43670]/0"}
-              `}
-          >
-            <label
-              htmlFor="message"
-              className="text-[#C43670] font-semibold text-[clamp(20px,1.5vw,32px)] mb-2"
-            >
-              Project details
-            </label>
-            <textarea
-              name="message"
-              value={clientData.message}
-              onChange={(e) => {
-                setClientData({ ...clientData, message: e.target.value });
-                setErrors({ ...errors, message: false });
-              }}
-              placeholder="Tell me your goals"
-              className="text-[#C43670] font-semibold placeholder:text-[#C43670]/40 text-[clamp(20px,1.5vw,32px)] leading-tight focus:outline-none h-full resize-none"
-            ></textarea>
-          </div>
-
-          {/* Services */}
-          <div
-            className={`flex flex-col w-full lg:w-1/3 px-6 pt-12 lg:pt-16 pb-6 lg:h-full rounded-xl lg:rounded-2xl bg-[#F0CCDF] border-3 transition-colors duration-300 focus-within:border-[#C43670]
-              ${errors.services ? "border-[#d40101]" : "border-[#C43670]/0"}
-              `}
-          >
-            <label
-              htmlFor="services"
-              className="text-[#C43670] font-semibold text-[clamp(20px,1.5vw,32px)] mb-2 lg:mb-4 2xl:mb-6"
-            >
-              What can I do for you?
-            </label>
-            <ul className="flex flex-wrap gap-2 w-full">
-              {serviceOptions.map((service) => (
-                <li
-                  key={service}
-                  onClick={() => toggleService(service)}
-                  className={`px-3.5 2xl:px-5 py-1.5 2xl:py-2 text-[clamp(18px,1.2vw,24px)] font-semibold rounded-full border-2 border-[#C43670] cursor-pointer transition-colors duration-300 ease-in-out
-                    ${
-                      services.includes(service)
-                        ? "text-[#F0CCDF] bg-[#C43670]"
-                        : "text-[#C43670]"
-                    }`}
-                >
-                  {service}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Budget */}
-          <div
-            className={`flex flex-col w-full lg:w-1/3 px-6 pt-12 lg:pt-16 pb-6 h-96 lg:h-full rounded-xl lg:rounded-2xl bg-[#F0CCDF] border-3 transition-colors duration-300 focus-within:border-[#C43670]
-              ${errors.budget ? "border-[#d40101]" : "border-[#C43670]/0"}
-              `}
-          >
-            <label
-              htmlFor="budget"
-              className="text-[#C43670] font-semibold text-[clamp(20px,1.5vw,32px)] mb-2 lg:mb-4 2xl:mb-6"
-            >
-              Do you have a budget range?
-            </label>
-            <ul className="flex flex-wrap gap-2 w-full">
-              {budgetOptions.map((option) => (
-                <li
-                  key={option}
-                  onClick={() => selectBudget(option)}
-                  className={`px-3.5 2xl:px-5 py-1.5 2xl:py-2 text-[clamp(18px,1.2vw,24px)] font-semibold rounded-full border-2 border-[#C43670] cursor-pointer transition-colors duration-300 ease-in-out
-                    ${
-                      budget === option
-                        ? "text-[#F0CCDF] bg-[#C43670]"
-                        : "text-[#C43670]"
-                    }`}
-                >
-                  {option}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </form>
+            {isSubmitting
+              ? "Sending..."
+              : submitStatus === "success"
+              ? "Message sent successfully!"
+              : submitStatus === "error"
+              ? "Error sending message. Please try again."
+              : "Send Message"}
+          </motion.button>
+        </form>
+      </div>
     </div>
   );
-});
-
-ContactForm.displayName = "ContactForm";
-
-export default ContactForm;
+}

@@ -9,16 +9,16 @@ import useDisableScroll from "@/hooks/useDisableScroll";
 import useInstagramBrowser from "@/hooks/useInstagramBrowser";
 
 const sliderImages = [
-  "/images/hero/image-1.jpg",
-  "/images/hero/image-2.jpg",
-  "/images/hero/image-3.jpg",
-  "/images/hero/image-4.jpg",
-  "/images/hero/image-5.jpg",
-  "/images/hero/image-6.jpg",
-  "/images/hero/image-7.jpg",
-  "/images/hero/image-8.jpg",
-  "/images/hero/image-9.jpg",
-  "/images/hero/image-10.jpg",
+  "https://images.unsplash.com/photo-1592663527359-cf6642f54cff?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODB8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D",
+  "https://images.unsplash.com/photo-1677009849746-c30632ec19a9?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGNhZmVlfGVufDB8fDB8fHww",
+  "https://plus.unsplash.com/premium_photo-1670469009826-db07ab733925?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTAxfHxjb2ZmZWV8ZW58MHx8MHx8fDA%3D",
+  "https://images.unsplash.com/photo-1495862433577-132cf20d7902?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D",
+  "https://plus.unsplash.com/premium_photo-1674327105076-36c4419864cf?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D",
+  "https://images.unsplash.com/photo-1527596428171-7885b82c91c6?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D",
+  "https://images.unsplash.com/photo-1562447457-579fc34967fb?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzl8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D",
+  "https://plus.unsplash.com/premium_photo-1671379526961-1aebb82b317b?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDJ8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D",
+  "https://images.unsplash.com/photo-1542372147193-a7aca54189cd?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDR8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D",
+  "https://images.unsplash.com/photo-1558122104-355edad709f6?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTR8fGNvZmZlZXxlbnwwfHwwfHx8MA%3D%3D",
 ];
 
 export default function Hero() {
@@ -31,7 +31,7 @@ export default function Hero() {
   return (
     <section className="pt-4 lg:pb-24 h-screen relative">
       <div className="px-4">
-        <h1 className="hidden">Jazmin Wong</h1>
+        <h1 className="hidden">Artisan Coffee</h1>
 
         <motion.div
           initial={{
@@ -76,15 +76,9 @@ export default function Hero() {
               }}
               className="w-full pointer-events-none mb-6"
             >
-              <Image
-                src="/images/other/jazmin.png"
-                alt="Hero"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="w-full h-auto sm:w-auto sm:h-[10vw]"
-                priority
-              />
+              <div className="text-[clamp(80px,12vw,200px)] font-bold text-[#3C2415] leading-[0.9] tracking-tight">
+                ARTISAN
+              </div>
             </motion.div>
           </div>
 
@@ -99,15 +93,9 @@ export default function Hero() {
               }}
               className="w-full pointer-events-none mb-6"
             >
-              <Image
-                src="/images/other/wong.png"
-                alt="Hero"
-                width={0}
-                height={0}
-                sizes="100vw"
-                className="w-auto h-[18.3vw] sm:h-[10vw]"
-                priority
-              />
+              <div className="text-[clamp(80px,12vw,200px)] font-bold text-[#F7E7CE] leading-[0.9] tracking-tight">
+                COFFEE
+              </div>
             </motion.div>
           </div>
         </motion.div>
@@ -127,9 +115,9 @@ export default function Hero() {
                   delay: width < 768 ? 2 : 1.9,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="text-[clamp(20px,1.6vw,32px)] font-semibold leading-[1.2] text-center md:text-left"
+                className="text-[clamp(20px,1.6vw,32px)] font-semibold leading-[1.2] text-center md:text-left text-[#3C2415]"
               >
-                Content Creation & Digital Storytelling
+                Specialty Coffee House & Roastery
               </motion.p>
             </div>
 
@@ -163,9 +151,9 @@ export default function Hero() {
                   delay: width < 768 ? 2.05 : 1.9,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className={`${playfair_display.className} text-[clamp(20px,1.6vw,32px)] font-normal -mt-1 leading-[1.2] text-center md:text-left`}
+                className={`${playfair_display.className} text-[clamp(20px,1.6vw,32px)] font-normal -mt-1 leading-[1.2] text-center md:text-left text-[#6F4E37]`}
               >
-                Scaling brands reach and impact
+                Where every cup tells a story
               </motion.p>
             </div>
           </div>
