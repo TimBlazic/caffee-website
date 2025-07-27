@@ -3,14 +3,13 @@
 import { motion } from "motion/react";
 import { useRef } from "react";
 import { useContactModalStore } from "@/lib/zustand/stores";
-import ContactForm, { ContactFormRef } from "../form/ContactForm";
+import ContactForm from "../form/ContactForm";
 import { cubicBezier } from "motion";
 import { IconX } from "@tabler/icons-react";
 import FixedContactButton from "../button/FixedContactButton";
 
 export default function ContactModal() {
   const modalRef = useRef<HTMLDivElement>(null);
-  const formRef = useRef<ContactFormRef>(null);
   const isModalOpen = useContactModalStore((state) => state.isModalOpen);
   const toggleModal = useContactModalStore((state) => state.toggleModal);
   const easeInOutQuart = cubicBezier(0.76, 0, 0.24, 1);
@@ -45,12 +44,10 @@ export default function ContactModal() {
         </button>
 
         <div className="h-full overflow-y-auto pb-20">
-          <ContactForm ref={formRef} />
+          <ContactForm toggleModal={toggleModal} />
         </div>
       </motion.div>
-      <FixedContactButton
-        formRef={formRef as React.RefObject<ContactFormRef>}
-      />
+      <FixedContactButton />
     </>
   );
 }

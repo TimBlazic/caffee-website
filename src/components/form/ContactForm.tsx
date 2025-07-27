@@ -75,14 +75,10 @@ const validateForm = (data: ClientData): Errors => {
 };
 
 interface ContactFormProps {
-  isModalOpen: boolean;
   toggleModal: () => void;
 }
 
-export default function ContactForm({
-  isModalOpen,
-  toggleModal,
-}: ContactFormProps) {
+export default function ContactForm({ toggleModal }: ContactFormProps) {
   const [clientData, setClientData] = useState<ClientData>(initialData);
   const [errors, setErrors] = useState<Errors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);

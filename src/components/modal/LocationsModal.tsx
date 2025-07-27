@@ -138,12 +138,12 @@ export default function LocationsModal() {
                           Features
                         </p>
                         <div className="flex flex-wrap gap-2">
-                          {location.features.map((feature, featureIndex) => {
+                          {location.features.map((feature) => {
                             const IconComponent =
                               featureIcons[feature] || IconMapPin;
                             return (
                               <div
-                                key={featureIndex}
+                                key={feature}
                                 className="flex items-center gap-2 bg-[#F7E7CE] px-3 py-1.5 rounded-full"
                               >
                                 <IconComponent className="w-4 h-4 text-[#3C2415]" />

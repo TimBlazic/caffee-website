@@ -15,7 +15,7 @@ export default function PhysicsContactButtons() {
 
   return (
     <div className="absolute inset-0 flex flex-wrap items-center justify-center gap-4 p-8">
-      {coffeeButtons.map((button, index) => (
+      {coffeeButtons.map((button) => (
         <motion.button
           key={button.text}
           initial={{ opacity: 0, scale: 0.8, y: 20 }}
